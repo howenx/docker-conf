@@ -1,5 +1,9 @@
 # docker-conf
-创建容器： sudo docker run --name pg-b -d -p 5432:5432 postgres-search
+
+- **创建容器**
+
+            sudo docker run --name pg-b -d -p 5432:5432 postgres-search
+
 连接到启动的容器：sudo docker run -it --rm --link pg-b:postgres-search-test postgres-search bash
 
 进入docker
