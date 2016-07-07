@@ -24,7 +24,7 @@
 			docker images|grep none|awk '{print $3 }'|xargs docker rmi
 
 
-**docker phgpgadmin导出sql出现空白问题解决**
-
-you need to modify your dbexport.php in /usr/share/phppgadmin (on Ubuntu) modify line from passthru($cmd); to echo passthru($cmd); modify line $cmd = $exe . " -i"; to $cmd = $exe;
-it will be enough. Cause parameter -i seems to be deprecated in postgres 9.5 , he gave error for me.
+- **docker phgpgadmin导出sql出现空白问题解决**
+	
+	        you need to modify your dbexport.php in /usr/share/phppgadmin (on Ubuntu) modify line from passthru($cmd); to echo passthru($cmd); modify line $cmd = $exe . " -i"; to $cmd = $exe;
+			it will be enough. Cause parameter -i seems to be deprecated in postgres 9.5 , he gave error for me.
