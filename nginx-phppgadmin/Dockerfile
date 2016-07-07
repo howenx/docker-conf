@@ -1,6 +1,7 @@
 FROM ubuntu:wily
 # Update the package repository
-RUN DEBIAN_FRONTEND=noninteractive  apt-get update && apt-get install -y locales && \
+RUN sed -ri 's/archive.ubuntu.com/us.archive.ubuntu.com/g' /etc/apt/sources.list && \
+	DEBIAN_FRONTEND=noninteractive  apt-get update && apt-get install -y locales && \
 	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils && \
    	DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates wget apt-transport-https curl vim build-essential
