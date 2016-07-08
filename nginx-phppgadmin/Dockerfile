@@ -34,7 +34,7 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ wily-pgdg main' 9.5 > /et
 RUN wget -O ACCC4CF8.asc "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc" \
 	&& apt-key add ACCC4CF8.asc \
 	&& apt-get update \
-    && apt-get install postgresql-client-9.5
+    && apt-get install -y postgresql-client-9.5
 
 
 # forward request and error logs to docker log collector
@@ -48,7 +48,7 @@ RUN apt-get -yqq clean && \
 
 COPY default.conf /etc/nginx/conf.d/default.conf
 
-
 EXPOSE 80 443
 COPY start.sh /start.sh
-CMD ["/start.sh"]
+RUN chmod 777 start.sh
+CMD ["bash", "start.sh"]
