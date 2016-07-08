@@ -1,16 +1,7 @@
-# postgres in a container
-#
-# docker run -rm -i -d \
-#       -p 5432 \
-#       -e USERNAME=docker  \
-#       -e PASSWORD=docker  \
-#       -v `pwd`/postgres:/var/lib/postgresql:rw \
-#       -v /etc/localtime:/etc/localtime \
-#       jacksoncage/postgres
-
 FROM ubuntu:wily
 
 # Update the package repository
+RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN sed -ri 's/archive.ubuntu.com/cn.archive.ubuntu.com/g' /etc/apt/sources.list && \
 	DEBIAN_FRONTEND=noninteractive  apt-get update && apt-get install -y locales && \
 	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
@@ -52,7 +43,6 @@ RUN gpasswd -a postgres sudo && \
 	echo "postgres    ALL=(ALL:ALL) ALL" >> /etc/sudoers && \
 	echo "%admin ALL=(ALL) ALL" >> /etc/sudoers && \
 	echo "%sudo   ALL=(ALL:ALL) ALL" >> /etc/sudoers
-	
 
 # Clean image
 RUN apt-get -yqq clean && \
@@ -74,5 +64,6 @@ RUN echo "host    all             all             0.0.0.0 0.0.0.0         md5" >
 	
 EXPOSE 5432
 COPY start.sh /start.sh
+COPY postgresql.conf /etc/postgresql/9.5/main/postgresql.conf
 RUN chmod 777 start.sh
 CMD ["bash", "start.sh"]

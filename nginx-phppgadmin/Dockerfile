@@ -1,5 +1,6 @@
 FROM ubuntu:wily
 # Update the package repository
+RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN sed -ri 's/archive.ubuntu.com/us.archive.ubuntu.com/g' /etc/apt/sources.list && \
 	DEBIAN_FRONTEND=noninteractive  apt-get update && apt-get install -y locales && \
 	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
@@ -50,5 +51,10 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80 443
 COPY start.sh /start.sh
-RUN chmod 777 start.sh
+COPY config.inc.php /etc/phppgadmin/config.inc.php
+RUN chmod 777 start.sh \
+	&& usermod -a -G www-data nginx \
+	&& chmod 777 /var/run/php5-fpm.sock \
+	&& sed -i "s/;listen.mode = 0660/listen.mode = 0660/g" /etc/php5/fpm/pool.d/www.conf \
+	&& sed -i 's/$cmd = $exe . " -i";/$cmd = $exe/g' /usr/share/phppgadmin/dbexport.php
 CMD ["bash", "start.sh"]
