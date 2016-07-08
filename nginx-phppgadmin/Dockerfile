@@ -54,7 +54,6 @@ COPY start.sh /start.sh
 COPY config.inc.php /etc/phppgadmin/config.inc.php
 RUN chmod 777 start.sh \
 	&& usermod -a -G www-data nginx \
-	&& chmod 777 /var/run/php5-fpm.sock \
 	&& sed -i "s/;listen.mode = 0660/listen.mode = 0660/g" /etc/php5/fpm/pool.d/www.conf \
 	&& sed -i 's/$cmd = $exe . " -i";/$cmd = $exe/g' /usr/share/phppgadmin/dbexport.php
 CMD ["bash", "start.sh"]
