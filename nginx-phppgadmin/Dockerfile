@@ -30,8 +30,11 @@ RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 573BFD6B3D8FBC64107
 						inetutils-ping \
 						phppgadmin
 
-RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
-    apt-get install postgresql-client-9.5
+RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ wily-pgdg main' 9.5 > /etc/apt/sources.list.d/pgdg.list
+RUN wget -O ACCC4CF8.asc "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc" \
+	&& apt-key add ACCC4CF8.asc \
+	&& apt-get update \
+    && apt-get install postgresql-client-9.5
 
 
 # forward request and error logs to docker log collector
