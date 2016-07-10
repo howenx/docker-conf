@@ -1,13 +1,10 @@
 FROM ubuntu:wily
 
 # Update the package repository
-RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN sed -ri 's/archive.ubuntu.com/cn.archive.ubuntu.com/g' /etc/apt/sources.list && \
 	DEBIAN_FRONTEND=noninteractive  apt-get update && apt-get install -y locales && \
 	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
-	DEBIAN_FRONTEND=noninteractive  apt-get install -yqq wget curl psmisc && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils && \
-   	DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates wget apt-transport-https python curl vim cmake build-essential git && \
+   	DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils ca-certificates wget apt-transport-https build-essential git && \
     wget -O scws-1.2.1.tar.bz2 "http://www.xunsearch.com/scws/down/scws-1.2.1.tar.bz2" && \
 	tar -xjvf scws-1.2.1.tar.bz2 && \
     cd scws-1.2.1 && \
@@ -16,6 +13,7 @@ RUN sed -ri 's/archive.ubuntu.com/cn.archive.ubuntu.com/g' /etc/apt/sources.list
 
 ENV LANG en_US.utf8
 
+RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ wily-pgdg main' 9.5 > /etc/apt/sources.list.d/pgdg.list
 RUN wget -O ACCC4CF8.asc "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc" \
@@ -23,10 +21,10 @@ RUN wget -O ACCC4CF8.asc "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc" 
 
 RUN apt-get update \
         && apt-get install -y postgresql-9.5 \
-		&& apt-get install -y postgresql-9.5-postgis-2.2 \
-		&& apt-get install -y libpq-dev \
-		&& apt-get install -y postgresql-server-dev-all \
-		&& apt-get install -y postgresql-common
+		postgresql-9.5-postgis-2.2 \
+		libpq-dev \
+		postgresql-server-dev-all \
+		postgresql-common
 	
 RUN set -x \
         && cd ~ \
