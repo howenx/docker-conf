@@ -27,17 +27,9 @@ RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 573BFD6B3D8FBC64107
 						php5-gd \
 						php5-mcrypt \
 						php5-mysql \
-						php5-pgsql \
-						php5-sqlite \
 						inetutils-ping \
-						phppgadmin
-
-RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ wily-pgdg main' 9.5 > /etc/apt/sources.list.d/pgdg.list
-RUN wget -O ACCC4CF8.asc "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc" \
-	&& apt-key add ACCC4CF8.asc \
-	&& apt-get update \
-    && apt-get install -y postgresql-client-9.5
-
+						phpmyadmin \
+						mysql-client-5.6
 
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
@@ -52,9 +44,8 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80 443
 COPY start.sh /start.sh
-COPY config.inc.php /etc/phppgadmin/config.inc.php
+COPY config.inc.php /etc/phpmyadmin/config.inc.php
 RUN chmod 777 start.sh \
 	&& usermod -a -G www-data nginx \
 	&& sed -i "s/;listen.mode = 0660/listen.mode = 0660/g" /etc/php5/fpm/pool.d/www.conf
-COPY dbexport.php /usr/share/phppgadmin/dbexport.php
 CMD ["bash", "start.sh"]
