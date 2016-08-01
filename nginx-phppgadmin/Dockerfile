@@ -1,5 +1,6 @@
 FROM ubuntu:wily
-# Update the package repository
+RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql
+
 RUN sed -ri 's/archive.ubuntu.com/us.archive.ubuntu.com/g' /etc/apt/sources.list && \
 	DEBIAN_FRONTEND=noninteractive  apt-get update && apt-get install -y locales && \
 	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
