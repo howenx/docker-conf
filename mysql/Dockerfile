@@ -40,7 +40,7 @@ RUN { \
 			echo mysql-community-server mysql-community-server/re-root-pass password ''; \
 			echo mysql-community-server mysql-community-server/remove-test-db select false; \
 		} | debconf-set-selections \
-		&& apt-get update && apt-get install -y mysql-server="${MYSQL_VERSION}" && rm -rf /var/lib/apt/lists/* \
+		&& apt-get update && apt-get install -y mysql-client="${MYSQL_VERSION}" mysql-common="${MYSQL_VERSION}"  mysql-community-server="${MYSQL_VERSION}" && rm -rf /var/lib/apt/lists/* \
 		&& rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld \
 		&& chown -R mysql:mysql /var/lib/mysql /var/run/mysqld \
 		&& chmod 777 /var/run/mysqld
