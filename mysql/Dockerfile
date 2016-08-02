@@ -30,15 +30,13 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 14AA40EC0831756756D
 RUN echo "deb http://ppa.launchpad.net/ondrej/mysql-5.6/ubuntu xenial main" > /etc/apt/sources.list.d/mysql.list
 
 RUN { \
-			echo mysql-community-server mysql-community-server/data-dir select ''; \
-			echo mysql-community-server mysql-community-server/root-pass password ''; \
-			echo mysql-community-server mysql-community-server/re-root-pass password ''; \
-			echo mysql-community-server mysql-community-server/remove-test-db select false; \
-		} | debconf-set-selections \
-		&& apt-get update && apt-get install -y mysql-server-5.6 \
-		&& rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld \
-		&& chown -R mysql:mysql /var/lib/mysql /var/run/mysqld \
-		&& chmod 777 /var/run/mysqld
+		echo mysql-server mysql-server/root_password password '123123'; \
+		echo mysql-server mysql-server/root_password_again password '123123'; \
+	} | debconf-set-selections \
+	&& apt-get update && apt-get install -y mysql-server-5.6 \
+	&& rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld \
+	&& chown -R mysql:mysql /var/lib/mysql /var/run/mysqld \
+	&& chmod 777 /var/run/mysqld
 
 RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf \
 		&& echo 'skip-host-cache\nskip-name-resolve' | awk '{ print } $1 == "[mysqld]" && c == 0 { c = 1; system("cat") }' /etc/mysql/my.cnf > /tmp/my.cnf \
@@ -52,6 +50,7 @@ RUN apt-get -yqq clean && \
 	    rm -rf /var/lib/apt/lists/*
 
 COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod 777 /usr/local/bin/docker-entrypoint.sh
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
