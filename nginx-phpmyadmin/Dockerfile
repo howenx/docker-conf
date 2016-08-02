@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM ubuntu:xenial
 # Update the package repository
 RUN sed -ri 's/archive.ubuntu.com/us.archive.ubuntu.com/g' /etc/apt/sources.list && \
 	DEBIAN_FRONTEND=noninteractive  apt-get update && apt-get install -y locales && \
@@ -10,13 +10,17 @@ ENV LANG en_US.utf8
 
 RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-ENV MYSQL_MAJOR 5.6
-ENV MYSQL_VERSION 5.6.32-1debian8
-RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys A4A9406876FCBD3C456770C88C718D3B5072E1F5
-RUN echo "deb http://repo.mysql.com/apt/debian/ jessie mysql-${MYSQL_MAJOR}" > /etc/apt/sources.list.d/mysql.list
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 14AA40EC0831756756D7F66C4F4EA0AAE5267A6C
+RUN echo "deb http://ppa.launchpad.net/ondrej/mysql-5.6/ubuntu xenial main" > /etc/apt/sources.list.d/mysql.list
 
-RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62 && \
-	echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" > /etc/apt/sources.list.d/nginx.list && \
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys AD829E29A018BAF8C3842FB080E7349A06ED541C
+RUN echo "deb http://ppa.launchpad.net/nijel/phpmyadmin/ubuntu xenial main " > /etc/apt/sources.list.d/phpmyadmin.list
+
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 14AA40EC0831756756D7F66C4F4EA0AAE5267A6C
+RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main " > /etc/apt/sources.list.d/php.list
+
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8B3981E7A6852F782CC4951600A6F0A3C300EE8C && \
+	echo "deb http://ppa.launchpad.net/nginx/development/ubuntu xenial main" > /etc/apt/sources.list.d/nginx.list && \
 	apt-get update && \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y \
 						nginx \
@@ -26,15 +30,16 @@ RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 573BFD6B3D8FBC64107
 						nginx-module-perl \
 						nginx-module-njs \
 						gettext-base \
+                        php5.6 \
+                        php5.6-common \
 						php5-cli \
-						php5-curl \
-						php5-fpm \
-						php5-gd \
-						php5-mcrypt \
-						php5-mysql \
-						inetutils-ping \
+						php5.6-curl \
+						php5.6-fpm \
+						php5.6-gd \
+						php5.6-mcrypt \
+						php5.6-mysql \
 						phpmyadmin \
-						mysql-community-client
+						mysql-client-5.6 
 
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
