@@ -46,7 +46,7 @@ RUN apt-get -yqq clean && \
     rm -rf /tmp/* /var/tmp/* && \
     rm -rf /var/lib/apt/lists/*
 
-COPY default.conf /etc/nginx/conf.d/default.conf
+COPY default /etc/nginx/sites-available/default
 
 EXPOSE 80
 ADD start.sh /start.sh
