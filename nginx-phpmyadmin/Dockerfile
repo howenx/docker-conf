@@ -48,10 +48,9 @@ RUN apt-get -yqq clean && \
 
 COPY default.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80 443
+EXPOSE 80
 ADD start.sh /start.sh
 
-RUN chmod 777 start.sh \
-	&& usermod -a -G www-data nginx \
-	&& sed -i "s/;listen.mode = 0660/listen.mode = 0660/g" /etc/php5/fpm/pool.d/www.conf
+RUN chmod 777 start.sh
+
 CMD ["bash", "start.sh"]
