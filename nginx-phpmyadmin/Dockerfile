@@ -48,7 +48,7 @@ RUN apt-get -yqq clean && \
 
 COPY default.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80 443
+EXPOSE 80
 ADD start.sh /start.sh
 
 RUN chmod 777 start.sh
