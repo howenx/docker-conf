@@ -20,19 +20,15 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 14AA40EC0831756756D
 RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main " > /etc/apt/sources.list.d/php.list
 
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8B3981E7A6852F782CC4951600A6F0A3C300EE8C && \
-	echo "deb http://ppa.launchpad.net/nginx/development/ubuntu xenial main" > /etc/apt/sources.list.d/nginx.list && \
-	apt-get update && \
+	echo "deb http://ppa.launchpad.net/nginx/development/ubuntu xenial main" > /etc/apt/sources.list.d/nginx.list
+    
+RUN apt-get update && \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y \
-						nginx \
-						nginx-module-xslt \
-						nginx-module-geoip \
-						nginx-module-image-filter \
-						nginx-module-perl \
-						nginx-module-njs \
+						nginx-full \
 						gettext-base \
                         php5.6 \
                         php5.6-common \
-						php5-cli \
+						php5.6-cli \
 						php5.6-curl \
 						php5.6-fpm \
 						php5.6-gd \
@@ -55,7 +51,6 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80 443
 ADD start.sh /start.sh
 
-RUN chmod 777 start.sh \
-	&& usermod -a -G www-data nginx \
-	&& sed -i "s/;listen.mode = 0660/listen.mode = 0660/g" /etc/php5/fpm/pool.d/www.conf
+RUN chmod 777 start.sh
+
 CMD ["bash", "start.sh"]
