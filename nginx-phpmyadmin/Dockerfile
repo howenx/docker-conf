@@ -19,20 +19,16 @@ RUN echo "deb http://ppa.launchpad.net/nijel/phpmyadmin/ubuntu xenial main " > /
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 14AA40EC0831756756D7F66C4F4EA0AAE5267A6C
 RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main " > /etc/apt/sources.list.d/php.list
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8B3981E7A6852F782CC4951600A6F0A3C300EE8C && \
-	echo "deb http://ppa.launchpad.net/nginx/development/ubuntu xenial main" > /etc/apt/sources.list.d/nginx.list && \
-	apt-get update && \
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8B3981E7A6852F782CC4951600A6F0A3C300EE8C
+RUN echo "deb http://ppa.launchpad.net/nginx/development/ubuntu xenial main" > /etc/apt/sources.list.d/nginx.list
+	
+RUN apt-get update && \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y \
-						nginx \
-						nginx-module-xslt \
-						nginx-module-geoip \
-						nginx-module-image-filter \
-						nginx-module-perl \
-						nginx-module-njs \
+						nginx-full \
 						gettext-base \
                         php5.6 \
                         php5.6-common \
-						php5-cli \
+						php5.6-cli \
 						php5.6-curl \
 						php5.6-fpm \
 						php5.6-gd \
