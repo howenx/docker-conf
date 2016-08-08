@@ -34,6 +34,9 @@ RUN apt-get update && \
 						php5.6-gd \
 						php5.6-mcrypt \
 						php5.6-mysql \
+						php-gettext \
+						php-mbstring \
+						php5.6-mbstring \
 						phpmyadmin \
 						mysql-client-5.6 
 
