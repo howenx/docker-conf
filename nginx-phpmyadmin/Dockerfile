@@ -24,6 +24,8 @@ RUN echo "deb http://ppa.launchpad.net/nginx/development/ubuntu xenial main" > /
 	
 RUN apt-get update && \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y \
+						bzip2 \
+						zip \
 						nginx-full \
 						gettext-base \
                         php5.6 \
@@ -34,6 +36,8 @@ RUN apt-get update && \
 						php5.6-gd \
 						php5.6-mcrypt \
 						php5.6-mysql \
+						php5.6-bz2 \
+						php5.6-zip \
 						php-gettext \
 						php-mbstring \
 						php5.6-mbstring \
@@ -54,6 +58,7 @@ COPY default /etc/nginx/sites-available/default
 EXPOSE 80
 ADD start.sh /start.sh
 
-RUN chmod 777 start.sh
+RUN chmod 660 -R /var/lib/phpmyadmin && \
+	chmod 777 start.sh
 
 CMD ["bash", "start.sh"]
