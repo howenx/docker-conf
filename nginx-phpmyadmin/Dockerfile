@@ -61,6 +61,8 @@ ADD start.sh /start.sh
 RUN chmod 660 -R /var/lib/phpmyadmin && \
 	chmod 777 start.sh
 	
-RUN sed -i "s/$cfg\['blowfish_secret'\] = '';/$cfg\['blowfish_secret'\] = '123123';/g" /usr/share/phpmyadmin/libraries/config.default.php
+RUN sed -i "s/$cfg\['blowfish_secret'\] = '';/$cfg\['blowfish_secret'\] = '123123';/g" /usr/share/phpmyadmin/libraries/config.default.php && \
+	sed -i "s/\$cfg/#\$cfg/g" /var/lib/phpmyadmin/blowfish_secret.inc.php && \
+	echo "\$cfg['blowfish_secret'] = '123123';" >> /var/lib/phpmyadmin/blowfish_secret.inc.php
 
 CMD ["bash", "start.sh"]
